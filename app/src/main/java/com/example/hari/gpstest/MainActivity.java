@@ -30,8 +30,9 @@ public class MainActivity extends AppCompatActivity{
             "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&" +
             "expires_in=604800";
     private String code;
-    public String userKey = "temp";
+    public String userKey = "";
     private WebView webView;
+    private SharedPreferences fitbitPreference;
     private boolean loadingFlag = false;
     Intent intent;
 
@@ -42,12 +43,18 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fitbitPreference = getSharedPreferences("fitbitPreference", MODE_PRIVATE);
+        Log.d("This is userkey", fitbitPreference.getString("userKey", ""));
 
-        loginPage(this);
+        if (fitbitPreference.getString("userKey", "").equals("")) {
+            loginPage(this);
+        } else {
+            intent = new Intent(MainActivity.this, GetLocation.class);
+            startActivity(intent);
+        }
     }
 
     public void loginPage(Context content){
-        Log.d(TAG, "Login Page");
         code = "";
 
 
@@ -76,8 +83,6 @@ public class MainActivity extends AppCompatActivity{
                     if (url.contains("code=")) {
                         URL codeUrl = new URL(url.toString());
                         code = codeUrl.getQuery().split("=")[1];
-                        Log.d(TAG, "after code URL");
-                        Log.d(TAG, code);
 
                         Authorization auth = new Authorization(getApplicationContext());
                         auth.getToken(code);
@@ -85,21 +90,16 @@ public class MainActivity extends AppCompatActivity{
                                 "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
                         webView.setVisibility(View.GONE);
                         loadingFlag = true;
-                        Log.d(TAG, "before intent");
 
                         intent = new Intent(MainActivity.this, GetLocation.class);
                         startActivity(intent);
-                        Log.d(TAG, "after intent");
                     }
-                    Log.d(TAG, "after code condition");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-        Log.d(TAG, "1");
         webView.loadUrl(oauth2Code);
-        Log.d(TAG, "2");
         return;
     }
 
@@ -114,12 +114,21 @@ public class MainActivity extends AppCompatActivity{
         @JavascriptInterface
         public void showHTML(String html) {
             userKey = Html.fromHtml(html).toString();
+            Log.d("User KEY : ", userKey);
             try {
                 JSONObject obj = new JSONObject(userKey);
                 userKey = obj.getString("key");
                 Log.d(TAG, String.valueOf(userKey));
+
+                SharedPreferences.Editor editor = fitbitPreference.edit();
+
+                editor.putString("userKey", userKey);
+                editor.commit();
+
+                Log.d("saved : ", fitbitPreference.getString("userKey", ""));
+
             } catch (JSONException e) {
-                System.out.println("Error");
+                Log.d("JSONEXCEPTION","Error");
             }
         }
     }
