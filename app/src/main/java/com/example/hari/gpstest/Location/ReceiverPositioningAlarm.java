@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -71,6 +72,11 @@ public class ReceiverPositioningAlarm extends BroadcastReceiver {
             try {
                 Toast.makeText(_context, "***new location***",
                         Toast.LENGTH_SHORT).show();
+                location.getLatitude();
+                location.getLongitude();
+
+                Toast.makeText(_context, "Latitude : " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(_context, "Longitude : " + location.getLongitude(), Toast.LENGTH_SHORT).show();
                 gotLocation(location);
             } catch (Exception e) {
             }
