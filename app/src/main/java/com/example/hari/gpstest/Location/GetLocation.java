@@ -1,6 +1,7 @@
 package com.example.hari.gpstest.Location;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class GetLocation extends AppCompatActivity {
             }
         };
         findViewById(R.id.getGPSButton).setOnClickListener(btnClickListener);
+        this.startService(new Intent(this, LocationService.class));
     }
 
     private boolean isGPSEnabbled() {

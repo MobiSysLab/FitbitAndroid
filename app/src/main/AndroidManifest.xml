@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--아래 명령어는 BOOT시에 바로 실행되게 하는 명령어-->
+    <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
 
     <application
         android:allowBackup="true"
@@ -19,7 +21,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".Location.LocationService"
+            android:enabled="true"/>
+        <receiver android:name=".Location.ReceiverPositioningAlarm">
+            <intent-filter>
+                <action android:name="com.example.hari.gpstest.ACTION_REFRESH_SCHEDULE_ALARM"/>
+            </intent-filter>
+        </receiver>
+
         <activity android:name=".Location.GetLocation"></activity>
+        <!--아래 명령어는 BOOT시에 바로 실행되게 하는 명령어-->
+        <!--<receiver android:name=".Location.StartReceiver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="false"-->
+            <!--android:label="StartReceiver">-->
+                <!--<intent-filter>-->
+                    <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+                <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>
