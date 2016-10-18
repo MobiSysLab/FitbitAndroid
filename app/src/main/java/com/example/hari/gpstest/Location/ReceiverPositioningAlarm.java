@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.example.hari.gpstest.Communication.SendLocation;
+
 import java.util.ArrayList;
 
 /**
@@ -72,11 +74,9 @@ public class ReceiverPositioningAlarm extends BroadcastReceiver {
             try {
                 Toast.makeText(_context, "***new location***",
                         Toast.LENGTH_SHORT).show();
-                location.getLatitude();
-                location.getLongitude();
+                SendLocation locationClass = new SendLocation();
+                locationClass.sendToServer(_context, location);
 
-                Toast.makeText(_context, "Latitude : " + location.getLatitude(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(_context, "Longitude : " + location.getLongitude(), Toast.LENGTH_SHORT).show();
                 gotLocation(location);
             } catch (Exception e) {
             }
