@@ -11,14 +11,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.*;
 import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -45,6 +44,9 @@ public class SendLocation {
 
         Gson gson = new Gson();
         String json = gson.toJson(userObject);
+        final Map<String, String> httpHeader = new HashMap<>();
+        httpHeader.put("Content-Type", "application/json");
+
         try {
             jsonObj = new JSONObject(json);
         } catch (JSONException e){
@@ -57,7 +59,7 @@ public class SendLocation {
 
         String url = GPS_URL;
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, jsonObj, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("response", response.toString());
@@ -67,7 +69,12 @@ public class SendLocation {
                 public void onErrorResponse(VolleyError error) {
                     Log.d("ERROR", error.toString());
                 }
-        });
+        }) {
+            @Override
+            public Map getHeaders() {
+                return httpHeader;
+            }
+        };
         queue.add(jsObjRequest);
     }
 }

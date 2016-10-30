@@ -23,17 +23,22 @@ public class GetLocation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_location);
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+//        Button.OnClickListener btnClickListener = new View.OnClickListener() {
+//            public void onClick(View v) {
+//                TextView gpsTextField = (TextView) findViewById(R.id.gpsTextField);
+//                getLocation();
+//
+//                gpsTextField.setText("Longitude : " + Double.toString(longitude) + ", Latitude : " + Double.toString(latitude));
+//            }
+//        };
+//        findViewById(R.id.getGPSButton).setOnClickListener(btnClickListener);
         Button.OnClickListener btnClickListener = new View.OnClickListener() {
             public void onClick(View v) {
-                TextView gpsTextField = (TextView) findViewById(R.id.gpsTextField);
-                getLocation();
-
-                gpsTextField.setText("Longitude : " + Double.toString(longitude) + ", Latitude : " + Double.toString(latitude));
+                logout();
             }
         };
-        findViewById(R.id.getGPSButton).setOnClickListener(btnClickListener);
         this.startService(new Intent(this, LocationService.class));
     }
 
@@ -45,17 +50,17 @@ public class GetLocation extends AppCompatActivity {
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    private void getLocation() {
-        if (isGPSEnabbled() && isNetworkEnabled()) {
-            String locationProvider = LocationManager.GPS_PROVIDER;
-            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-
-            if (lastKnownLocation != null)
-            {
-                longitude = lastKnownLocation.getLongitude();
-                latitude = lastKnownLocation.getLatitude();
-                Log.d("In Location", "Longitude : " + longitude + ", Latitude : " + latitude);
-            }
-        }
-    }
+//    private void getLocation() {
+//        if (isGPSEnabbled() && isNetworkEnabled()) {
+//            String locationProvider = LocationManager.GPS_PROVIDER;
+//            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+//
+//            if (lastKnownLocation != null)
+//            {
+//                longitude = lastKnownLocation.getLongitude();
+//                latitude = lastKnownLocation.getLatitude();
+//                Log.d("In Location", "Longitude : " + longitude + ", Latitude : " + latitude);
+//            }
+//        }
+//    }
 }
