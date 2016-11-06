@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity{
     public String userKey = "";
     private WebView webView;
     private SharedPreferences fitbitPreference;
-    private boolean loadingFlag = false;
     Intent intent;
 
     private static String TAG = "*** MainActivity *** ";
@@ -73,9 +72,6 @@ public class MainActivity extends AppCompatActivity{
         });
 
         webView.setWebViewClient(new WebViewClient() {
-
-
-
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -89,7 +85,6 @@ public class MainActivity extends AppCompatActivity{
                         webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                 "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
                         webView.setVisibility(View.GONE);
-                        loadingFlag = true;
 
                         intent = new Intent(MainActivity.this, GetLocation.class);
                         startActivity(intent);
